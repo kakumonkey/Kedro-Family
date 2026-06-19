@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEDRO FAMILY — Marcus Marcus &amp; Breakcore Soundtracks</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&family=Press+Start+2P&display=swap');
+
+  :root{
+    --black: #0a0a0a;
+    --bone: #e8e3d3;
+    --blood: #6e0f0f;
+    --blood-bright: #9d1c1c;
+    --gb-green: #1f3d2e;
+    --gb-green-bright: #4f7a5c;
+    --gb-screen: #c9d6b0;
+    --glitch-violet: #9d8fd4;
+    --noise-gray: #3a3a3a;
+    --vhs-line: rgba(255,255,255,0.04);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--black);
+    color:var(--bone);
+    font-family:'VT323', monospace;
+    font-size:19px;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    font-family:'Special Elite', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- GRAIN / SCANLINE OVERLAY ---------- */
+  .grain{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:999;
+    opacity:0.06;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+  .scanlines{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:998;
+    background:repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0,0,0,0.18) 3px,
+      transparent 4px
+    );
+    opacity:0.5;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;
+    z-index:500;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 5vw;
+    background:linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    backdrop-filter:blur(2px);
+  }
+  .nav-logo{
+    font-family:'Special Elite', monospace;
+    font-size:1.1rem;
+    letter-spacing:0.08em;
+    color:var(--bone);
+  }
+  .nav-logo span{color:var(--blood-bright);}
+  .nav-links{display:flex;gap:28px;font-size:0.95rem;letter-spacing:0.05em;}
+  .nav-links a{
+    opacity:0.75;
+    border-bottom:1px solid transparent;
+    transition:opacity 0.2s, border-color 0.2s;
+    padding-bottom:4px;
+  }
+  .nav-links a:hover{opacity:1;border-color:var(--blood-bright);}
+  .nav-toggle{display:none;}
+
+  @media (max-width:720px){
+    .nav-links{
+      position:fixed;top:0;right:0;
+      height:100vh;width:70vw;
+      flex-direction:column;
+      justify-content:center;
+      background:rgba(10,10,10,0.97);
+      transform:translateX(100%);
+      transition:transform 0.3s ease;
+      gap:34px;
+      font-size:1.2rem;
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-toggle{
+      display:block;
+      background:none;border:none;
+      color:var(--bone);
+      font-size:1.6rem;
+      cursor:pointer;
+      z-index:600;
+    }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(110,15,15,0.25), transparent 60%),
+      var(--black);
+    padding:0 5vw;
+  }
+
+  .hero-eyebrow{
+    font-size:0.85rem;
+    letter-spacing:0.35em;
+    color:var(--glitch-violet);
+    margin-bottom:24px;
+    opacity:0.85;
+  }
+
+  .hero-title{
+    font-size:clamp(3rem, 12vw, 8rem);
+    line-height:0.95;
+    color:var(--bone);
+    position:relative;
+    text-shadow:
+      2px 0 var(--blood-bright),
+      -2px 0 var(--glitch-violet);
+    animation:flicker 6s infinite;
+  }
+
+  .hero-title .glitch-layer{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    animation:glitch-shift 3.5s infinite;
+    color:var(--blood-bright);
+    clip-path:inset(0 0 92% 0);
+    opacity:0.7;
+  }
+
+  @keyframes flicker{
+    0%,97%,100%{opacity:1;}
+    98%{opacity:0.85;}
+    99%{opacity:1;}
+  }
+  @keyframes glitch-shift{
+    0%,90%,100%{transform:translate(0,0);clip-path:inset(0 0 92% 0);}
+    91%{transform:translate(-6px,2px);clip-path:inset(10% 0 60% 0);}
+    93%{transform:translate(6px,-1px);clip-path:inset(40% 0 30% 0);}
+    95%{transform:translate(-3px,0);clip-path:inset(70% 0 10% 0);}
+  }
+
+  .hero-sub{
+    margin-top:28px;
+    font-family:'VT323',monospace;
+    font-size:1.3rem;
+    color:var(--bone);
+    opacity:0.75;
+    max-width:560px;
+    line-height:1.5;
+  }
+
+  .hero-scroll{
+    position:absolute;
+    bottom:38px;
+    font-size:0.8rem;
+    letter-spacing:0.25em;
+    opacity:0.5;
+    animation:bob 2s infinite ease-in-out;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(8px);}
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{
+    padding:120px 8vw;
+    position:relative;
+  }
+  .section-label{
+    font-size:0.85rem;
+    letter-spacing:0.3em;
+    opacity:0.6;
+    margin-bottom:14px;
+  }
+  .section-title{
+    font-size:clamp(2rem, 5vw, 3.4rem);
+    margin-bottom:50px;
+  }
+
+  /* ---------- JUEGO / GAMEBOY SECTION ---------- */
+  .games{
+    background:linear-gradient(180deg, var(--black) 0%, #0d1410 100%);
+    border-top:1px solid rgba(79,122,92,0.2);
+    border-bottom:1px solid rgba(79,122,92,0.2);
+  }
+  .games .section-label{color:var(--gb-green-bright);}
+
+  .game-card{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:60px;
+    align-items:center;
+  }
+
+  .gb-shell{
+    background:#5a5a52;
+    border-radius:18px 18px 60px 18px;
+    padding:22px 22px 40px 22px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.08);
+    position:relative;
+  }
+  .gb-screen-frame{
+    background:#1c1c1c;
+    border-radius:6px;
+    padding:18px;
+    box-shadow:inset 0 0 0 2px #0a0a0a;
+  }
+  .gb-screen{
+    aspect-ratio:10/9;
+    background:var(--gb-screen);
+    border-radius:2px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .gb-screen::before{
+    content:'';
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,0.08) 4px);
+  }
+  .gb-screen-content{
+    font-family:'Press Start 2P', monospace;
+    color:var(--gb-green);
+    font-size:0.7rem;
+    text-align:center;
+    line-height:1.8;
+    padding:10px;
+    z-index:2;
+    animation:gb-blink 2.5s infinite step-end;
+  }
+  @keyframes gb-blink{
+    0%,80%{opacity:1;}
+    90%{opacity:0.4;}
+    100%{opacity:1;}
+  }
+  .gb-brand{
+    text-align:center;
+    color:#2a2a26;
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    margin-top:14px;
+    font-family:'Special Elite',monospace;
+  }
+  .gb-dpad{
+    position:absolute;bottom:50px;left:30px;
+    width:54px;height:54px;
+    opacity:0.5;
+  }
+
+  .game-info .game-tag{
+    display:inline-block;
+    font-size:0.8rem;
+    letter-spacing:0.15em;
+    color:var(--gb-screen);
+    background:var(--gb-green);
+    padding:6px 14px;
+    margin-bottom:20px;
+    border-radius:2px;
+  }
+  .game-info h3{
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    margin-bottom:18px;
+    color:var(--bone);
+  }
+  .game-info p{
+    font-size:1.15rem;
+    line-height:1.6;
+    opacity:0.8;
+    margin-bottom:28px;
+    max-width:520px;
+  }
+  .coming-soon-strip{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-family:'Special Elite',monospace;
+    letter-spacing:0.1em;
+    color:var(--gb-green-bright);
+    font-size:0.95rem;
+  }
+  .coming-soon-strip::before{
+    content:'';
+    width:10px;height:10px;
+    border-radius:50%;
+    background:var(--gb-green-bright);
+    box-shadow:0 0 8px var(--gb-green-bright);
+    animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.3;}
+  }
+  .format-note{
+    margin-top:70px;
+    padding-top:30px;
+    border-top:1px solid rgba(79,122,92,0.2);
+    font-size:1rem;
+    opacity:0.55;
+    max-width:700px;
+    line-height:1.6;
+  }
+
+  /* ---------- MUSIC / SOUNDTRACK SECTION ---------- */
+  .music{
+    background:
+      linear-gradient(180deg, #0d0a14 0%, var(--black) 100%);
+  }
+  .music .section-label{color:var(--glitch-violet);}
+
+  .music-layout{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:60px;
+    align-items:start;
+  }
+
+  .signal-frame{
+    border:1px solid rgba(157,143,212,0.35);
+    padding:14px;
+    position:relative;
+    background:rgba(157,143,212,0.03);
+  }
+  .signal-frame::before{
+    content:'SEÑAL RECIBIDA — KEDRO FAMILY';
+    position:absolute;
+    top:-12px;left:14px;
+    background:var(--black);
+    padding:0 8px;
+    font-size:0.75rem;
+    letter-spacing:0.2em;
+    color:var(--glitch-violet);
+  }
+  .video-wrap{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:#000;
+  }
+  .video-wrap iframe{
+    width:100%;height:100%;border:0;
+    filter:saturate(1.1) contrast(1.05);
+  }
+
+  .music-side h3{
+    font-size:1.8rem;
+    margin-bottom:18px;
+    color:var(--bone);
+  }
+  .music-side p{
+    opacity:0.78;
+    line-height:1.6;
+    margin-bottom:26px;
+    font-size:1.1rem;
+  }
+  .freq-list{
+    list-style:none;
+    border-top:1px solid rgba(157,143,212,0.25);
+  }
+  .freq-list li{
+    display:flex;
+    justify-content:space-between;
+    padding:14px 0;
+    border-bottom:1px solid rgba(157,143,212,0.25);
+    font-size:1.05rem;
+  }
+  .freq-list li span:first-child{opacity:0.6;letter-spacing:0.05em;}
+  .freq-list li span:last-child{color:var(--glitch-violet);}
+
+  .listen-free-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:30px;
+    padding:14px 28px;
+    border:1px solid var(--glitch-violet);
+    color:var(--glitch-violet);
+    letter-spacing:0.15em;
+    font-size:0.95rem;
+    transition:background 0.2s, color 0.2s;
+  }
+  .listen-free-btn:hover{
+    background:var(--glitch-violet);
+    color:var(--black);
+  }
+
+  /* ---------- MARKETING / PRÓXIMAMENTE STRIP ---------- */
+  .marketing{
+    background:var(--blood);
+    background:linear-gradient(135deg, #2a0606 0%, #160303 100%);
+    text-align:center;
+    border-top:1px solid rgba(157,28,28,0.4);
+    border-bottom:1px solid rgba(157,28,28,0.4);
+  }
+  .marketing .section-label{color:var(--blood-bright);justify-content:center;display:flex;}
+  .marketing-title{
+    font-size:clamp(1.8rem,4.5vw,3rem);
+    margin-bottom:20px;
+  }
+  .marketing-sub{
+    max-width:600px;
+    margin:0 auto 50px;
+    opacity:0.75;
+    font-size:1.15rem;
+    line-height:1.6;
+  }
+  .price-teaser{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .price-card{
+    border:1px solid rgba(232,227,211,0.2);
+    padding:30px 36px;
+    min-width:220px;
+    background:rgba(0,0,0,0.25);
+  }
+  .price-card .pc-label{
+    font-size:0.8rem;
+    letter-spacing:0.2em;
+    opacity:0.55;
+    margin-bottom:10px;
+  }
+  .price-card .pc-value{
+    font-family:'Special Elite',monospace;
+    font-size:1.6rem;
+    color:var(--bone);
+  }
+  .price-card .pc-note{
+    margin-top:10px;
+    font-size:0.95rem;
+    opacity:0.6;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    background:var(--black);
+    text-align:center;
+  }
+  .contact .section-label{justify-content:center;display:flex;color:var(--bone);opacity:0.5;}
+  .contact h2{margin-bottom:18px;}
+  .contact p{
+    max-width:480px;
+    margin:0 auto 50px;
+    opacity:0.7;
+    font-size:1.15rem;
+    line-height:1.6;
+  }
+  .channels{
+    display:flex;
+    justify-content:center;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  .channel{
+    border:1px solid rgba(232,227,211,0.25);
+    padding:18px 30px;
+    min-width:160px;
+    transition:border-color 0.2s, transform 0.2s, background 0.2s;
+  }
+  .channel:hover{
+    border-color:var(--blood-bright);
+    transform:translateY(-4px);
+    background:rgba(110,15,15,0.1);
+  }
+  .channel .ch-name{
+    font-family:'Special Elite',monospace;
+    font-size:1rem;
+    letter-spacing:0.1em;
+    margin-bottom:6px;
+  }
+  .channel .ch-handle{
+    font-size:0.95rem;
+    opacity:0.55;
+  }
+  .channel-disabled{
+    opacity:0.45;
+    cursor:default;
+  }
+  .channel-disabled:hover{
+    border-color:rgba(232,227,211,0.25);
+    transform:none;
+    background:none;
+  }
+
+  footer{
+    padding:40px 8vw;
+    text-align:center;
+    font-size:0.85rem;
+    letter-spacing:0.1em;
+    opacity:0.4;
+    border-top:1px solid rgba(232,227,211,0.08);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:880px){
+    .game-card, .music-layout{
+      grid-template-columns:1fr;
+    }
+    .gb-shell{max-width:300px;margin:0 auto;}
+  }
+
+  @media (max-width:600px){
+    section{padding:90px 6vw;}
+    .price-teaser{gap:20px;}
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--glitch-violet);
+    outline-offset:3px;
+  }
+
+  /* ---------- MUSIC TOGGLE (floating) ---------- */
+  .music-toggle{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    z-index:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(10,10,10,0.85);
+    border:1px solid var(--glitch-violet);
+    color:var(--bone);
+    padding:12px 18px;
+    border-radius:30px;
+    cursor:pointer;
+    font-family:'VT323',monospace;
+    font-size:0.95rem;
+    letter-spacing:0.05em;
+    backdrop-filter:blur(4px);
+    transition:border-color 0.2s, background 0.2s;
+  }
+  .music-toggle:hover{
+    background:rgba(157,143,212,0.15);
+  }
+  .music-toggle .bars{
+    display:flex;
+    align-items:flex-end;
+    gap:3px;
+    height:14px;
+  }
+  .music-toggle .bars span{
+    width:3px;
+    background:var(--glitch-violet);
+    display:block;
+    animation:bar-bounce 0.9s infinite ease-in-out;
+  }
+  .music-toggle .bars span:nth-child(1){height:40%;animation-delay:0s;}
+  .music-toggle .bars span:nth-child(2){height:100%;animation-delay:0.15s;}
+  .music-toggle .bars span:nth-child(3){height:65%;animation-delay:0.3s;}
+  .music-toggle.paused .bars span{
+    animation-play-state:paused;
+    height:30% !important;
+  }
+  @keyframes bar-bounce{
+    0%,100%{transform:scaleY(0.4);}
+    50%{transform:scaleY(1);}
+  }
+  .music-toggle .yt-mount{
+    position:absolute;
+    width:1px;height:1px;
+    overflow:hidden;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  @media (max-width:600px){
+    .music-toggle{
+      bottom:16px;right:16px;
+      padding:10px 14px;
+      font-size:0.85rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="scanlines"></div>
+
+<nav>
+  <div class="nav-logo">KEDRO <span>FAMILY</span></div>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  <div class="nav-links" id="navLinks">
+    <a href="#juego">Juego</a>
+    <a href="#musica">Música</a>
+    <a href="#proximamente">Próximamente</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">ESTUDIO INDEPENDIENTE — TERROR PSICOLÓGICO · PS1 · GAME BOY</div>
+  <h1 class="hero-title">
+    KEDRO FAMILY
+    <span class="glitch-layer" aria-hidden="true">KEDRO FAMILY</span>
+  </h1>
+  <p class="hero-sub">Hacemos juegos de terror psicológico en distintos formatos retro, y la música que los persigue.</p>
+  <div class="hero-scroll">▼ DESLIZÁ ▼</div>
+</section>
+
+<!-- JUEGO -->
+<section class="games" id="juego">
+  <div class="section-label">// EN DESARROLLO</div>
+  <h2 class="section-title">Nuestro próximo juego</h2>
+  <div class="game-card">
+    <div class="gb-shell">
+      <div class="gb-screen-frame">
+        <div class="gb-screen">
+          <div class="gb-screen-content">MARCUS<br>MARCUS<br>▓▓▓▓▓░░░</div>
+        </div>
+      </div>
+      <div class="gb-brand">KEDRO™ PORTABLE</div>
+    </div>
+    <div class="game-info">
+      <span class="game-tag">ESTILO GAME BOY · TERROR PSICODÉLICO</span>
+      <h3>Marcus Marcus</h3>
+      <p>La historia de Marcos Calvet, un amante de las fiestas techno que, perdido en el consumo de LSD, atraviesa espejos hacia mundos ultra extraños, psicodélicos y profundamente horrorificantes. Un descenso visual en 4 colores donde cada espejo es una puerta — y ninguna lleva a casa.</p>
+      <div class="coming-soon-strip">PRÓXIMAMENTE</div>
+    </div>
+  </div>
+  <p class="format-note">Marcus Marcus es nuestro primer título, en formato Game Boy. Kedro Family también desarrolla juegos de terror psicológico estilo PS1 — más formatos, más pesadillas, próximamente.</p>
+</section>
+
+<!-- MUSICA -->
+<section class="music" id="musica">
+  <div class="section-label">// TRANSMISIÓN ABIERTA</div>
+  <h2 class="section-title">Soundtrack — escuchá gratis</h2>
+  <div class="music-layout">
+    <div class="signal-frame">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/6fsJYSGgxmg" title="Kedro Family Soundtrack" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="music-side">
+      <h3>Breakcore para mundos rotos</h3>
+      <p>El sonido detrás de nuestros juegos: breakbeats acelerados, glitches y atmósferas distorsionadas. Lo subimos a YouTube para que lo escuches gratis, las veces que quieras.</p>
+      <ul class="freq-list">
+        <li><span>GÉNERO</span><span>Breakcore / Glitch</span></li>
+        <li><span>FORMATO</span><span>YouTube — gratis</span></li>
+        <li><span>USO</span><span>Soundtrack original de nuestros juegos</span></li>
+      </ul>
+      <a class="listen-free-btn" href="https://youtu.be/6fsJYSGgxmg" target="_blank" rel="noopener">▶ ESCUCHAR EN YOUTUBE</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETING / PROXIMAMENTE -->
+<section class="marketing" id="proximamente">
+  <div class="section-label">// AVISO AL PÚBLICO</div>
+  <h2 class="marketing-title">Pre-venta y precios — muy pronto</h2>
+  <p class="marketing-sub">Estamos terminando los detalles de lanzamiento de Marcus Marcus. Estas son las líneas de precio que estamos evaluando — la info final se confirma antes del lanzamiento.</p>
+  <div class="price-teaser">
+    <div class="price-card">
+      <div class="pc-label">PRECIO BASE ESTIMADO</div>
+      <div class="pc-value">A confirmar</div>
+      <div class="pc-note">Marcus Marcus — formato Game Boy</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-label">PRE-VENTA</div>
+      <div class="pc-value">Próximamente</div>
+      <div class="pc-note">Descuento por reserva anticipada</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-label">SOUNDTRACK</div>
+      <div class="pc-value">Gratis</div>
+      <div class="pc-note">Disponible ahora en YouTube</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact" id="contacto">
+  <div class="section-label">// CANALES ABIERTOS</div>
+  <h2 class="section-title">Contacto</h2>
+  <p>¿Querés saber más, proponer algo o simplemente seguir nuestro proceso? Encontranos en estos canales.</p>
+  <div class="channels">
+    <a class="channel" href="https://www.youtube.com/@KedroFamily" target="_blank" rel="noopener">
+      <div class="ch-name">YOUTUBE</div>
+      <div class="ch-handle">@KedroFamily</div>
+    </a>
+    <a class="channel" href="https://www.instagram.com/familykedro" target="_blank" rel="noopener">
+      <div class="ch-name">INSTAGRAM</div>
+      <div class="ch-handle">@familykedro</div>
+    </a>
+    <a class="channel" href="mailto:familykedro@gmail.com">
+      <div class="ch-name">EMAIL</div>
+      <div class="ch-handle">familykedro@gmail.com</div>
+    </a>
+    <div class="channel channel-disabled">
+      <div class="ch-name">DISCORD</div>
+      <div class="ch-handle">Próximamente</div>
+    </div>
+    <div class="channel channel-disabled">
+      <div class="ch-name">TIKTOK</div>
+      <div class="ch-handle">Próximamente</div>
+    </div>
+    <div class="channel channel-disabled">
+      <div class="ch-name">TWITTER / X</div>
+      <div class="ch-handle">Próximamente</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  KEDRO FAMILY © 2026 — TODAS LAS PESADILLAS RESERVADAS
+</footer>
+
+<button class="music-toggle paused" id="musicToggle" aria-label="Reproducir música de fondo">
+  <span class="bars"><span></span><span></span><span></span></span>
+  <span id="musicLabel">ESCUCHAR</span>
+</button>
+<div class="yt-mount" id="ytMount"></div>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // ---- Background music via YouTube IFrame API ----
+  let ytPlayer = null;
+  let ytReady = false;
+  let userWantsPlay = false;
+
+  const musicBtn = document.getElementById('musicToggle');
+  const musicLabel = document.getElementById('musicLabel');
+
+  function loadYouTubeAPI(){
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+  }
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('ytMount', {
+      height: '1',
+      width: '1',
+      videoId: '6fsJYSGgxmg',
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        loop: 1,
+        playlist: '6fsJYSGgxmg'
+      },
+      events: {
+        onReady: function(e){
+          ytReady = true;
+          e.target.setVolume(35);
+          if(userWantsPlay){
+            e.target.playVideo();
+          }
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.ENDED){
+            ytPlayer.playVideo();
+          }
+        }
+      }
+    });
+  };
+
+  loadYouTubeAPI();
+
+  musicBtn.addEventListener('click', () => {
+    userWantsPlay = !userWantsPlay;
+    if(userWantsPlay){
+      musicBtn.classList.remove('paused');
+      musicLabel.textContent = 'SONANDO';
+      musicBtn.setAttribute('aria-label','Pausar música de fondo');
+      if(ytReady) ytPlayer.playVideo();
+    } else {
+      musicBtn.classList.add('paused');
+      musicLabel.textContent = 'ESCUCHAR';
+      musicBtn.setAttribute('aria-label','Reproducir música de fondo');
+      if(ytReady) ytPlayer.pauseVideo();
+    }
+  });
+</script>
+
+</body>
+</html>
