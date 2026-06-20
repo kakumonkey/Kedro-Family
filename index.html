@@ -362,6 +362,14 @@
     letter-spacing:0.2em;
     color:var(--glitch-violet);
   }
+  .video-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:720px){
+    .video-grid{grid-template-columns:1fr;}
+  }
   .video-wrap{
     position:relative;
     width:100%;
@@ -410,6 +418,11 @@
     letter-spacing:0.15em;
     font-size:0.95rem;
     transition:background 0.2s, color 0.2s;
+  }
+  .listen-buttons{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
   }
   .listen-free-btn:hover{
     background:var(--glitch-violet);
@@ -668,9 +681,14 @@
   <div class="section-label">// TRANSMISIÓN ABIERTA</div>
   <h2 class="section-title">Soundtrack — escuchá gratis</h2>
   <div class="music-layout">
-    <div class="signal-frame">
-      <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/6fsJYSGgxmg" title="Kedro Family Soundtrack" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+   <div class="signal-frame">
+      <div class="video-grid">
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/6fsJYSGgxmg" title="Kedro Family Soundtrack 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/FikRHz1Yrpo" title="Kedro Family Soundtrack 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
       </div>
     </div>
     <div class="music-side">
@@ -681,7 +699,10 @@
         <li><span>FORMATO</span><span>YouTube — gratis</span></li>
         <li><span>USO</span><span>Soundtrack original de nuestros juegos</span></li>
       </ul>
-      <a class="listen-free-btn" href="https://youtu.be/6fsJYSGgxmg" target="_blank" rel="noopener">▶ ESCUCHAR EN YOUTUBE</a>
+      <div class="listen-buttons">
+        <a class="listen-free-btn" href="https://youtu.be/6fsJYSGgxmg" target="_blank" rel="noopener">▶ TRACK 1</a>
+        <a class="listen-free-btn" href="https://youtu.be/FikRHz1Yrpo" target="_blank" rel="noopener">▶ TRACK 2</a>
+      </div>
     </div>
   </div>
 </section>
