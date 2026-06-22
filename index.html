@@ -362,6 +362,58 @@
     letter-spacing:0.2em;
     color:var(--glitch-violet);
   }
+  .yt-channel-card{
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:16/6.4;
+    overflow:hidden;
+    border-radius:2px;
+  }
+  .yt-banner-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:grayscale(0.15) contrast(1.05);
+    transition:transform 0.4s ease, filter 0.4s ease;
+  }
+  .yt-channel-card:hover .yt-banner-img{
+    transform:scale(1.03);
+    filter:grayscale(0) contrast(1.1);
+  }
+  .yt-channel-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    background:linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.75) 100%);
+    opacity:0;
+    transition:opacity 0.3s ease;
+  }
+  .yt-channel-card:hover .yt-channel-overlay{
+    opacity:1;
+  }
+  .yt-channel-cta{
+    font-family:'Special Elite',monospace;
+    font-size:1.1rem;
+    letter-spacing:0.12em;
+    color:var(--bone);
+    background:rgba(157,28,28,0.85);
+    padding:12px 22px;
+  }
+  .yt-channel-handle{
+    font-size:0.95rem;
+    color:var(--glitch-violet);
+    letter-spacing:0.1em;
+  }
+  @media (max-width:720px){
+    .yt-channel-card{aspect-ratio:16/9;}
+    .yt-channel-overlay{opacity:1;background:linear-gradient(180deg, rgba(10,10,10,0.05) 30%, rgba(10,10,10,0.85) 100%);}
+    .yt-channel-cta{font-size:0.9rem;padding:10px 16px;}
+  }
   .video-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -682,14 +734,14 @@
   <h2 class="section-title">Soundtrack — escuchá gratis</h2>
   <div class="music-layout">
    <div class="signal-frame">
-      <div class="video-grid">
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/6fsJYSGgxmg" title="Kedro Family Soundtrack 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      <div class="signal-frame">
+      <a class="yt-channel-card" href="https://www.youtube.com/@KedroFamily" target="_blank" rel="noopener">
+        <img src="assets/youtube-banner.jpg" alt="Kedro Family — canal de YouTube" class="yt-banner-img">
+        <div class="yt-channel-overlay">
+          <span class="yt-channel-cta">▶ VISITAR NUESTRO CANAL DE YOUTUBE</span>
+          <span class="yt-channel-handle">@KedroFamily</span>
         </div>
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/FikRHz1Yrpo" title="Kedro Family Soundtrack 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-        </div>
-      </div>
+      </a>
     </div>
     <div class="music-side">
       <h3>Breakcore para mundos rotos</h3>
